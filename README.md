@@ -44,6 +44,8 @@
 - `Alibaba-Cloud.tongyi-lingma`
 - `zaaack.markdown-editor`
 
+插件名获取：https://open-vsx.org/
+
 ## 三、构建Docker镜像
 
 拉取项目到本地，在包含 `Dockerfile` 的目录中运行以下命令来构建Docker镜像：
