@@ -1,5 +1,7 @@
 # Docker化的Code Server环境
 
+> 部分操作以群晖NAS为例，注意修改相关内容
+
 ## 一、概述
 
 这个Docker镜像基于 `codercom/code-server:latest`，包括以下集成和配置：
@@ -44,11 +46,22 @@
 
 ## 三、构建Docker镜像
 
-在包含 `Dockerfile` 的目录中运行以下命令来构建Docker镜像：
+拉取项目到本地，在包含 `Dockerfile` 的目录中运行以下命令来构建Docker镜像：
 
 ```sh
 docker build -t my-code-server .
 ```
+
+也可以fork一下本项目，通过github actions自动构建镜像,然后推送的阿里云私有仓库。
+
+### GitHub Secrets配置
+1. 打开你的GitHub仓库。
+2. 点击 "Settings"。
+3. 在左侧边栏中，点击 "Secrets and variables" -> "Actions"。
+4. 点击 "New repository secret" 添加以下密钥：
+- ALIYUN_USERNAME
+- ALIYUN_PASSWORD
+- IMAGE_VERSION
 
 ## 四、生成自签名证书
 
@@ -115,7 +128,7 @@ docker run --name code-server \
   -v /volume1/docker/code-server/certs/certs.crt:/home/coder/cert.crt \
   -v /volume1/docker/code-server/certs/certs.key:/home/coder/cert.key \
   -e TZ=Asia/Shanghai \
-  -e PASSWORD=Cors0n@dm1n. \
+  -e PASSWORD=123456 \
   --restart=always \
   --privileged=true \
   -d my-code-server \
@@ -132,7 +145,7 @@ docker run --name code-server \
 - `-v /volume1/docker/code-server/certs/certs.crt:/home/coder/cert.crt`: 将主机上的SSL证书文件挂载到容器。
 - `-v /volume1/docker/code-server/certs/certs.key:/home/coder/cert.key`: 将主机上的SSL证书密钥文件挂载到容器。
 - `-e TZ=Asia/Shanghai`: 为容器设置时区环境变量。
-- `-e PASSWORD=Cors0n@dm1n.`: 为code-server设置密码环境变量。
+- `-e PASSWORD=123456`: 为code-server设置密码环境变量。
 - `--restart=always`: 确保容器停止后总是重启。
 - `--privileged=true`: 授予容器额外的特权。
 - `-d`: 以后台模式运行容器。
