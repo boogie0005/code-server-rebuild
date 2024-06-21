@@ -155,4 +155,3 @@ docker run --name code-server \
 - `--cert /home/coder/cert.crt --cert-key /home/coder/cert.key`: 为code-server指定SSL证书和密钥。
 
 按照这些说明，您将拥有一个功能齐全的code-server环境，其中预装了Python、Node.js和各种扩展，准备好用于开发任务。
-1
