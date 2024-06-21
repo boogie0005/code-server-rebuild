@@ -21,7 +21,8 @@ RUN sudo apt-get update && \
 COPY requirements.txt /home/coder/requirements.txt
 RUN python3 -m venv /home/coder/venv && \
     /home/coder/venv/bin/pip install --upgrade pip && \
-    /home/coder/venv/bin/pip install -r /home/coder/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+    /home/coder/venv/bin/pip install -r /home/coder/requirements.txt  
+    #-i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # 将虚拟环境的路径添加到 PATH
 ENV PATH="/home/coder/venv/bin:$PATH"
@@ -32,14 +33,14 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && \
     sudo apt-get clean && \
     sudo rm -rf /var/lib/apt/lists/*
 
+# 设置全局 npm 安装路径
+ENV NPM_CONFIG_PREFIX=/home/coder/.npm-global
+ENV PATH=/home/coder/.npm-global/bin:$PATH
+
 # 设置全局 npm 安装路径，并安装 pnpm
 RUN mkdir -p /home/coder/.npm-global && \
     npm install -g pnpm && \
     pnpm -v
-
-# 设置全局 npm 安装路径
-ENV NPM_CONFIG_PREFIX=/home/coder/.npm-global
-ENV PATH=/home/coder/.npm-global/bin:$PATH
 
 # 安装常用插件
 RUN code-server --install-extension ms-python.python \
