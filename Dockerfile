@@ -41,7 +41,8 @@ ENV PATH=/home/coder/.npm-global/bin:$PATH
 RUN mkdir -p /home/coder/.npm-global && \
     npm install -g pnpm && \
     pnpm -v
-    export PATH=/home/coder/.npm-global/bin:$PATH
+    
+ENV PATH=/home/coder/.npm-global/bin:$PATH
 
 # 安装常用插件
 RUN code-server --install-extension ms-python.python \
