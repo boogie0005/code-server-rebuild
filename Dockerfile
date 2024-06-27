@@ -41,6 +41,7 @@ ENV PATH=/home/coder/.npm-global/bin:$PATH
 RUN mkdir -p /home/coder/.npm-global && \
     npm install -g pnpm && \
     pnpm -v
+    export PATH=/home/coder/.npm-global/bin:$PATH
 
 # 安装常用插件
 RUN code-server --install-extension ms-python.python \
@@ -51,7 +52,8 @@ RUN code-server --install-extension ms-python.python \
     && code-server --install-extension naumovs.color-highlight \
     && code-server --install-extension MS-CEINTL.vscode-language-pack-zh-hans \
     && code-server --install-extension Alibaba-Cloud.tongyi-lingma \
-    && code-server --install-extension zaaack.markdown-editor
+    && code-server --install-extension zaaack.markdown-editor \
+    && code-server --install-extension oderwat.indent-rainbow
 
 # 设置工作目录
 WORKDIR /home/coder/project
