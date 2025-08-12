@@ -1,9 +1,11 @@
-name: Docker Image CI
+name: Build and push to Aliyun
 
 on:
   push:
     branches:
       - main
+  release:
+    types: [published]
 
 jobs:
   build-and-push:
@@ -11,19 +13,21 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Log in to Docker Hub
-      run: echo "${{ secrets.ALIYUN_PASSWORD }}" | docker login --username ${{ secrets.ALIYUN_USERNAME }} --password-stdin registry.cn-shanghai.aliyuncs.com
+    - name: Log in to Aliyun Container Registry
+      run: echo "${{ secrets.ALIYUN_PASSWORD }}" | docker login --username ${{ secrets.ALIYUN_USERNAME }} --password-stdin registry.cn-hangzhou.aliyuncs.com
 
     - name: Build and push Docker image
       env:
         IMAGE_VERSION: ${{ secrets.IMAGE_VERSION }}
       run: |
-        docker build -t my-code-server .
-        IMAGE_ID=$(docker images -q my-code-server)
-        docker tag $IMAGE_ID registry.cn-shanghai.aliyuncs.com/nexopera-images/my-code-server:${IMAGE_VERSION}
-        docker push registry.cn-shanghai.aliyuncs.com/nexopera-images/my-code-server:${IMAGE_VERSION}
+        docker build -t code-server-rebuild .
+        IMAGE_ID=$(docker images -q code-server-rebuild)
+        docker tag $IMAGE_ID registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/code-server-rebuild:${IMAGE_VERSION}
+        docker tag $IMAGE_ID registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/code-server-rebuild:latest
+        docker push registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/code-server-rebuild:${IMAGE_VERSION}
+        docker push registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALYUN_USERNAME }}/code-server-rebuild:latest
