@@ -19,7 +19,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Log in to Aliyun Container Registry
-      run: echo "${{ secrets.ALIYUN_PASSWORD }}" | docker login --username ${{ secrets.ALIYUN_USERNAME }} --password-stdin registry.cn-hangzhou.aliyuncs.com
+      run: echo "${{ secrets.ALIYUN_PASSWORD }}" | docker login --username ${{ secrets.ALIYUN_USERNAME }} --password-stdin crpi-ycy45s92ut53ifd4.cn-hangzhou.personal.cr.aliyuncs.com
 
     - name: Build and push Docker image
       env:
@@ -27,7 +27,7 @@ jobs:
       run: |
         docker build -t code-server-rebuild .
         IMAGE_ID=$(docker images -q code-server-rebuild)
-        docker tag $IMAGE_ID registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/code-server-rebuild:${IMAGE_VERSION}
-        docker tag $IMAGE_ID registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/code-server-rebuild:latest
-        docker push registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/code-server-rebuild:${IMAGE_VERSION}
-        docker push registry.cn-hangzhou.aliyuncs.com/${{ secrets.ALYUN_USERNAME }}/code-server-rebuild:latest
+        docker tag $IMAGE_ID crpi-ycy45s92ut53ifd4.cn-hangzhou.personal.cr.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/code-server-rebuild:${IMAGE_VERSION}
+        docker tag $IMAGE_ID crpi-ycy45s92ut53ifd4.cn-hangzhou.personal.cr.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/code-server-rebuild:latest
+        docker push crpi-ycy45s92ut53ifd4.cn-hangzhou.personal.cr.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/code-server-rebuild:${IMAGE_VERSION}
+        docker push crpi-ycy45s92ut53ifd4.cn-hangzhou.personal.cr.aliyuncs.com/${{ secrets.ALIYUN_USERNAME }}/code-server-rebuild:latest
