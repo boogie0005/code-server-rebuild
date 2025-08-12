@@ -1,11 +1,6 @@
 # 使用 codercom/code-server:latest 作为基础镜像
 FROM codercom/code-server:latest
 
-# 设置国内镜像源
-RUN echo "deb https://mirrors.aliyun.com/debian/ bookworm main non-free non-free-firmware contrib" > /etc/apt/sources.list.d/aliyun.list && \
-    echo "deb https://mirrors.aliyun.com/debian/ bookworm-updates main non-free non-free-firmware contrib" >> /etc/apt/sources.list.d/aliyun.list && \
-    echo "deb https://mirrors.aliyun.com/debian/ bookworm-backports main non-free non-free-firmware contrib" >> /etc/apt/sources.list.d/aliyun.list
-
 # 其余内容保持不变...
 
 # 更新包列表，并安装必要的软件包和 Python
