@@ -52,11 +52,8 @@ RUN code-server --install-extension ms-python.python \
     && code-server --install-extension timonwong.shellcheck \
     && code-server --install-extension Vue.volar \
     && code-server --install-extension johnsoncodehk.volar \
-    && code-server --install-extension naumovs.color-highlight \
     && code-server --install-extension MS-CEINTL.vscode-language-pack-zh-hans \
-    && code-server --install-extension Alibaba-Cloud.tongyi-lingma \
-    && code-server --install-extension zaaack.markdown-editor \
-    && code-server --install-extension oderwat.indent-rainbow
+    && code-server --install-extension zaaack.markdown-editor 
 
 # 设置工作目录
 WORKDIR /home/coder/project
