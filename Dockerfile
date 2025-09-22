@@ -3,7 +3,7 @@ FROM codercom/code-server:latest
 
 # 其余内容保持不变...
 
-# 更新包列表，并安装必要的软件包和 Python
+# 更新包列表，并安装必要的软件包和 Python + JDK
 RUN sudo apt-get update && \
     sudo apt-get install -y \
     curl \
@@ -16,8 +16,23 @@ RUN sudo apt-get update && \
     python3 \
     python3-pip \
     python3-venv \
-    && sudo apt-get clean \
-    && sudo rm -rf /var/lib/apt/lists/*
+    openjdk-17-jdk \
+    && sudo apt-get clean && \
+    sudo rm -rf /var/lib/apt/lists/*
+
+# 设置 JAVA_HOME
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+# 安装 Maven (手动下载官方二进制)
+RUN wget https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz -O /tmp/maven.tar.gz && \
+    sudo tar -zxvf /tmp/maven.tar.gz -C /opt && \
+    sudo mv /opt/apache-maven-3.9.9 /opt/maven && \
+    rm /tmp/maven.tar.gz
+
+# 设置 Maven 环境变量
+ENV M2_HOME=/opt/maven
+ENV PATH=$M2_HOME/bin:$PATH
 
 # 创建一个虚拟环境并激活它，拷贝 requirements.txt 文件到容器中并安装 Python 包
 COPY requirements.txt /home/coder/requirements.txt
@@ -43,8 +58,6 @@ ENV PATH=/home/coder/.npm-global/bin:$PATH
 RUN mkdir -p /home/coder/.npm-global && \
     npm install -g pnpm && \
     pnpm -v
-    
-ENV PATH=/home/coder/.npm-global/bin:$PATH
 
 # 安装常用插件
 RUN code-server --install-extension ms-python.python \
@@ -53,7 +66,8 @@ RUN code-server --install-extension ms-python.python \
     && code-server --install-extension Vue.volar \
     && code-server --install-extension johnsoncodehk.volar \
     && code-server --install-extension MS-CEINTL.vscode-language-pack-zh-hans \
-    && code-server --install-extension zaaack.markdown-editor 
+    && code-server --install-extension zaaack.markdown-editor \
+    && code-server --install-extension vscjava.vscode-java-pack
 
 # 设置工作目录
 WORKDIR /home/coder/project
